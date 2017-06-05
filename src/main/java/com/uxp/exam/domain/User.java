@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+//@Cacheable
+//@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Table(name="USER")
 public class User {
 	

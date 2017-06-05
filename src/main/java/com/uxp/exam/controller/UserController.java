@@ -20,49 +20,48 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uxp.exam.domain.User;
-import com.uxp.exam.service.UserServiceImpl;
+import com.uxp.exam.service.UserService;
 
 
 /**
  * @author Erik
- *
  */
 @RestController()
 public class UserController {
 	
 	@Autowired
-	UserServiceImpl userService; 
+	UserService userService; 
 
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<User> getUsers() {
-    	return userService.getAllUsers();
+    	return getUserService().getAllUsers();
     }
 	
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public User getUser(@PathVariable(value="userId", required=true) long userId) throws Exception {
-    	User user = userService.getUser(userId);
+    	User user = getUserService().getUser(userId);
 		return user;
     }
     
     @RequestMapping(value = "/user", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody    
     public User postUser(@RequestBody(required=true) User user) throws Exception {
-        user = userService.addUser(user);
+        user = getUserService().addUser(user);
         return user;
     }    
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public User putUser(@RequestBody(required=true) User user) throws Exception{
-        user = userService.updateUser(user);
+        user = getUserService().updateUser(user);
         return user;
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable(value="userId", required=true) long userId) throws Exception {
-        userService.deleteUser(userId);
+    	getUserService().deleteUser(userId);
     }  
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -73,4 +72,12 @@ public class UserController {
         }
         return "redirect:/login?logout";
     }
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
 }

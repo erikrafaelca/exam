@@ -35,6 +35,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return getUserRepository().findAll();
 	}
 
+	//@Cacheable("users")
+	@Transactional(readOnly=true)
 	public User getUser(Long userId) throws Exception {
 		User user = getUserRepository().findOne(userId);
 		if (user == null) {
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			user.setPassword(getPasswordEncoder().encode(user.getPassword()));
 			user = getUserRepository().save(user);
 		} catch (DataIntegrityViolationException e) {
-			StringBuffer msg = new StringBuffer(getMessageByLocaleService().getMessage("com.upx.exam.errors.0003", user.getName()));
+			StringBuffer msg = new StringBuffer(getMessageByLocaleService().getMessage("com.upx.exam.errors.0002", user.getName()));
 			msg.append(e.getMessage());
 			throw new RuntimeException(msg.toString()); 
 		}
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			user.setPassword(getPasswordEncoder().encode(user.getPassword()));
 			user = getUserRepository().save(user);
 		} catch (DataAccessException e) {
-			StringBuffer msg = new StringBuffer(getMessageByLocaleService().getMessage("com.upx.exam.errors.0004", user.getName()));
+			StringBuffer msg = new StringBuffer(getMessageByLocaleService().getMessage("com.upx.exam.errors.0003", user.getName()));
 			msg.append(e.getMessage());
 			new RuntimeException(msg.toString());
 		}
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		else
 			user = getUserRepository().findByName(name);
 		if (user == null) {
-			String msg = getMessageByLocaleService().getMessage("com.upx.exam.errors.0002", name);
+			String msg = getMessageByLocaleService().getMessage("com.upx.exam.errors.0001", name);
 			throw new UsernameNotFoundException(msg);
 		}
 		return new UserDetailsImpl(user);

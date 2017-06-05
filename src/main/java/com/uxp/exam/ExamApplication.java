@@ -11,6 +11,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @SpringBootApplication
+//@EnableCaching
 public class ExamApplication extends WebMvcConfigurerAdapter {
 	
 	//private static final Logger logger = LoggerFactory.getLogger(ExamApplication.class);
